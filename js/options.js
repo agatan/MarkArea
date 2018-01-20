@@ -27,4 +27,5 @@ function restoreOptions() {
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);
+document.getElementById('blacklists').addEventListener('input', saveOptions);
 document.getElementById('save').addEventListener('click', saveOptions);

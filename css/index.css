@@ -1,0 +1,29 @@
+body {
+  padding: 10px;
+  background-color: #f7fdf6;
+}
+
+#blacklists {
+  display: block;
+  width: 100%;
+  resize: vertical;
+  cursor: text;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border: 1px solid;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.status-container {
+  display: flex;
+}
+
+#status {
+  color: rgba(0, 0, 0, 0.6);
+  padding: 10px;
+}
+
+#save {
+  padding: 10px;
+}

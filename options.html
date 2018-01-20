@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>markarea options</title>
-  <style>
-    body: { padding: 10px; }
-  </style>
+  <link rel="stylesheet" href="css/index.css">
 </head>
+
 <body>
   <p>URL Blacklist (regular expressions / line separated)</p>
-  <textarea name="blacklists" id="blacklists" cols="60" rows="10"></textarea>
+  <textarea name="blacklists" id="blacklists" cols="60" rows="10" placeholder="Blacklist..."></textarea>
 
-  <div id="status"></div>
-  <button id="save">Save</button>
+  <div class="status-container">
+    <button id="save">Save</button>
+    <div id="status"></div>
+  </div>
 
   <script src="js/options.js"></script>
-  <script src='foo'></script>
 </body>
+
 </html>
