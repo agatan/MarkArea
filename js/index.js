@@ -10,9 +10,8 @@ function calcSelectedLineRange(area) {
 }
 
 function replaceSelectedLinesInArea(area, lineMapper) {
-    const { start, end } = calcSelectedLineRange(area);
-    area.selectionStart = start;
-    area.selectionEnd = end;
+    const start = area.selectionStart;
+    const end = area.selectionEnd;
     const replacingContent = area.value.substr(start, end - start);
     const replacedContent = replacingContent
         .split('\n')
@@ -27,6 +26,9 @@ function onRawTabKey(ev) {
     const area = ev.target;
     const start = area.selectionStart;
     const end = area.selectionEnd;
+    const range = calcSelectedLineRange(area);
+    area.selectionStart = range.start;
+    area.selectionEnd = range.end;
     const replaced = replaceSelectedLinesInArea(ev.target, line => {
         return '  ' + line;
     });
@@ -38,6 +40,9 @@ function onShiftTabKey(ev) {
     const area = ev.target;
     const start = area.selectionStart;
     const end = area.selectionEnd;
+    const range = calcSelectedLineRange(area);
+    area.selectionStart = range.start;
+    area.selectionEnd = range.end;
     let startOffset = null;
     let endOffset = 0;
     const replaced = replaceSelectedLinesInArea(area, line => {
