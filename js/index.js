@@ -6,18 +6,18 @@ function calcSelectedLineRange(area) {
     return {
         start: lastNewlineBeforeStart === -1 ? 0 : lastNewlineBeforeStart + 1,
         end: firstNewlineAfterEnd === -1 ? area.value.length : firstNewlineAfterEnd,
-    }
+    };
 }
 
 function replaceSelectedLinesInArea(area, lineMapper) {
-    const {
-        start,
-        end
-    } = calcSelectedLineRange(area);
+    const { start, end } = calcSelectedLineRange(area);
     area.selectionStart = start;
     area.selectionEnd = end;
     const replacingContent = area.value.substr(start, end - start);
-    const replacedContent = replacingContent.split('\n').map(lineMapper).join('\n');
+    const replacedContent = replacingContent
+        .split('\n')
+        .map(lineMapper)
+        .join('\n');
     area.focus();
     document.execCommand('insertText', false, replacedContent);
     return replacedContent;
@@ -27,8 +27,8 @@ function onRawTabKey(ev) {
     const area = ev.target;
     const start = area.selectionStart;
     const end = area.selectionEnd;
-    const replaced = replaceSelectedLinesInArea(ev.target, (line) => {
-        return "  " + line;
+    const replaced = replaceSelectedLinesInArea(ev.target, line => {
+        return '  ' + line;
     });
     area.selectionStart = start + 2;
     area.selectionEnd = end + 2 * replaced.split('\n').length;
@@ -40,7 +40,7 @@ function onShiftTabKey(ev) {
     const end = area.selectionEnd;
     let startOffset = null;
     let endOffset = 0;
-    const replaced = replaceSelectedLinesInArea(area, (line) => {
+    const replaced = replaceSelectedLinesInArea(area, line => {
         const nonSpaceHead = line.search(/\S/);
         if (nonSpaceHead > 2) {
             endOffset += 2;
@@ -70,29 +70,29 @@ function onTabKey(ev) {
     }
 }
 
-const ITEMIZE_REGEXP = /^(\s*)(\*|-|\+|\d+\.|\[[\sx]\])\s*\S/
+const ITEMIZE_REGEXP = /^(\s*)(\*|-|\+|\d+\.|\[[\sx]\])\s*\S/;
 
 function onEnterKey(ev) {
     const area = ev.target;
     const { start, end } = calcSelectedLineRange(area);
-    const match = area.value.substr(start, end-start).match(ITEMIZE_REGEXP);
+    const match = area.value.substr(start, end - start).match(ITEMIZE_REGEXP);
     if (!match) {
         return;
     }
-    ev.preventDefault()
+    ev.preventDefault();
     const indent = match[1];
     let itemize = match[2].replace('[x]', '[ ]');
-    const listNumberMatch = itemize.match(/^\s*(\d+)\./)
+    const listNumberMatch = itemize.match(/^\s*(\d+)\./);
     if (listNumberMatch) {
         const n = parseInt(listNumberMatch[1]);
-        itemize = (n + 1) + '.'
+        itemize = n + 1 + '.';
     }
     area.focus();
     document.execCommand('insertText', false, '\n' + indent + itemize + ' ');
 }
 
 function setCallbacks(area) {
-    area.addEventListener('keydown', (ev) => {
+    area.addEventListener('keydown', ev => {
         switch (ev.keyCode) {
             case 9:
                 onTabKey(ev);
@@ -114,4 +114,4 @@ function main() {
     }
 }
 
-main()
+main();
