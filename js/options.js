@@ -1,23 +1,29 @@
 function saveOptions() {
     const blacklists = document.getElementById('blacklists').value.split('\n');
-    chrome.storage.sync.set({
-        blacklists,
-    }, () => {
-        const status = document.getElementById('status');
-        status.textContent = '...saved';
-        setTimeout(() => {
-            status.textContent = '';
-        }, 750);
-    });
+    chrome.storage.sync.set(
+        {
+            blacklists,
+        },
+        () => {
+            const status = document.getElementById('status');
+            status.textContent = '...saved';
+            setTimeout(() => {
+                status.textContent = '';
+            }, 750);
+        },
+    );
 }
 
 function restoreOptions() {
-    chrome.storage.sync.get({
-        blacklists: [],
-    }, (items) => {
-        console.log(items.blacklists)
-        document.getElementById('blacklists').value = items.blacklists.join('\n');
-    });
+    chrome.storage.sync.get(
+        {
+            blacklists: [],
+        },
+        items => {
+            console.log(items.blacklists);
+            document.getElementById('blacklists').value = items.blacklists.join('\n');
+        },
+    );
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);

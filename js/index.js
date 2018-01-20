@@ -79,10 +79,7 @@ const ITEMIZE_REGEXP = /^(\s*)((?:[*\-+](?: \[[\sx]\])?)|\d+\.)\s*/;
 
 function onEnterKey(ev) {
     const area = ev.target;
-    const {
-        start,
-        end
-    } = calcSelectedLineRange(area);
+    const { start, end } = calcSelectedLineRange(area);
     const match = area.value.substr(start, end - start).match(ITEMIZE_REGEXP);
     if (!match) {
         return;
@@ -130,9 +127,12 @@ function main(blacklists) {
     }
 }
 
-chrome.storage.sync.get({
-    blacklists: [],
-}, (items) => {
-    const blacklists = items.blacklists.filter((x) => x).map(x => new RegExp(x));
-    main(blacklists);
-});
+chrome.storage.sync.get(
+    {
+        blacklists: [],
+    },
+    items => {
+        const blacklists = items.blacklists.filter(x => x).map(x => new RegExp(x));
+        main(blacklists);
+    },
+);
