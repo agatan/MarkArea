@@ -75,7 +75,7 @@ function onTabKey(ev) {
     }
 }
 
-const ITEMIZE_REGEXP = /^(\s*)(\*|-|\+|\d+\.|\[[\sx]\])\s*\S/;
+const ITEMIZE_REGEXP = /^(\s*)((?:[*\-+](?: \[[\sx]\])?)|\d+\.)\s*/;
 
 function onEnterKey(ev) {
     const area = ev.target;
