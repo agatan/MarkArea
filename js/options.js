@@ -1,3 +1,4 @@
+let lastClearTimer;
 function saveOptions() {
     const blacklists = document.getElementById('blacklists').value.split('\n');
     chrome.storage.sync.set(
@@ -7,7 +8,10 @@ function saveOptions() {
         () => {
             const status = document.getElementById('status');
             status.textContent = '...saved';
-            setTimeout(() => {
+            if (lastClearTimer) {
+                clearTimeout(lastClearTimer);
+            }
+            lastClearTimer = setTimeout(() => {
                 status.textContent = '';
             }, 750);
         },
