@@ -101,8 +101,10 @@ function setCallbacks(area) {
         switch (ev.keyCode) {
             case 9:
                 onTabKey(ev);
+                break;
             case 13:
                 onEnterKey(ev);
+                break;
         }
         return;
     });
