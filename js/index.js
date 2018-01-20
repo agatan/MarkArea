@@ -18,6 +18,7 @@ function replaceSelectedLinesInArea(area, lineMapper) {
     area.selectionEnd = end;
     const replacingContent = area.value.substr(start, end - start);
     const replacedContent = replacingContent.split('\n').map(lineMapper).join('\n');
+    area.focus();
     document.execCommand('insertText', false, replacedContent);
     return replacedContent;
 }
@@ -69,11 +70,34 @@ function onTabKey(ev) {
     }
 }
 
+const ITEMIZE_REGEXP = /^(\s*)(\*|-|\+|\d+\.|\[[\sx]\])\s*\S/
+
+function onEnterKey(ev) {
+    const area = ev.target;
+    const { start, end } = calcSelectedLineRange(area);
+    const match = area.value.substr(start, end-start).match(ITEMIZE_REGEXP);
+    if (!match) {
+        return;
+    }
+    ev.preventDefault()
+    const indent = match[1];
+    let itemize = match[2].replace('[x]', '[ ]');
+    const listNumberMatch = itemize.match(/^\s*(\d+)\./)
+    if (listNumberMatch) {
+        const n = parseInt(listNumberMatch[1]);
+        itemize = (n + 1) + '.'
+    }
+    area.focus();
+    document.execCommand('insertText', false, '\n' + indent + itemize + ' ');
+}
+
 function setCallbacks(area) {
     area.addEventListener('keydown', (ev) => {
         switch (ev.keyCode) {
             case 9:
                 onTabKey(ev);
+            case 13:
+                onEnterKey(ev);
         }
         return;
     });
