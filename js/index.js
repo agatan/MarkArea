@@ -4,7 +4,7 @@ function calcSelectedLineRange(area) {
     const lastNewlineBeforeStart = area.value.lastIndexOf('\n', start - 1);
     const firstNewlineAfterEnd = area.value.indexOf('\n', end);
     return {
-        start: lastNewlineBeforeStart === -1 ? 0 : lastNewlineBeforeStart,
+        start: lastNewlineBeforeStart === -1 ? 0 : lastNewlineBeforeStart + 1,
         end: firstNewlineAfterEnd === -1 ? area.value.length : firstNewlineAfterEnd,
     }
 }
@@ -14,24 +14,23 @@ function replaceSelectedLinesInArea(area, lineMapper) {
         start,
         end
     } = calcSelectedLineRange(area);
-    let content = area.value.substr(0, start+1);
-    const replacingContent = area.value.substr(start+1, end - start - 1);
-    console.log(replacingContent.split('\n'));
+    area.selectionStart = start;
+    area.selectionEnd = end;
+    const replacingContent = area.value.substr(start, end - start);
     const replacedContent = replacingContent.split('\n').map(lineMapper).join('\n');
-    content += replacedContent;
-    content += area.value.substr(end);
-    area.value = content;
+    document.execCommand('insertText', false, replacedContent);
+    return replacedContent;
 }
 
 function onRawTabKey(ev) {
     const area = ev.target;
     const start = area.selectionStart;
     const end = area.selectionEnd;
-    replaceSelectedLinesInArea(ev.target, (line) => {
+    const replaced = replaceSelectedLinesInArea(ev.target, (line) => {
         return "  " + line;
     });
     area.selectionStart = start + 2;
-    area.selectionEnd = end + 2;
+    area.selectionEnd = end + 2 * replaced.split('\n').length;
 }
 
 function onShiftTabKey(ev) {
@@ -39,24 +38,24 @@ function onShiftTabKey(ev) {
     const start = area.selectionStart;
     const end = area.selectionEnd;
     let startOffset = null;
-    let endOffset = null;
-    replaceSelectedLinesInArea(area, (line) => {
+    let endOffset = 0;
+    const replaced = replaceSelectedLinesInArea(area, (line) => {
         const nonSpaceHead = line.search(/\S/);
         if (nonSpaceHead > 2) {
-            endOffset = 2;
+            endOffset += 2;
             startOffset = startOffset || 2;
             return line.substr(2);
         }
         if (nonSpaceHead === -1) {
             const offset = line.length > 2 ? 2 : line.length;
-            endOffset = offset;
+            endOffset += offset;
             startOffset = startOffset || offset;
             return line.substr(2);
         }
-        endOffset = nonSpaceHead;
+        endOffset += nonSpaceHead;
         startOffset = startOffset || nonSpaceHead;
         return line.trimLeft();
-    })
+    });
     area.selectionStart = start - startOffset;
     area.selectionEnd = end - endOffset;
 }
