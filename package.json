@@ -1,5 +1,5 @@
 {
-  "name": "markarea",
+  "name": "MarkArea",
   "version": "0.0.1",
   "description": "Chrome extension for writing Markdown in textarea",
   "main": "js/index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/agatan/markarea.git"
+    "url": "git+https://github.com/agatan/MarkArea.git"
   },
   "keywords": [
     "markdown",
@@ -20,9 +20,9 @@
   "author": "Naomichi Agata <agatan039@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/agatan/markarea/issues"
+    "url": "https://github.com/agatan/MarkArea/issues"
   },
-  "homepage": "https://github.com/agatan/markarea#readme",
+  "homepage": "https://github.com/agatan/MarkArea#readme",
   "devDependencies": {
     "prettier": "^1.10.2"
   }
