@@ -112,7 +112,7 @@ function setCallbacks(area) {
 
 function main(blacklists) {
     for (blacklist of blacklists) {
-        if (window.location.href.search(blacklist)) {
+        if (window.location.href.search(blacklist) !== -1) {
             return;
         }
     }
